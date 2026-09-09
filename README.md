@@ -11,16 +11,42 @@ This is the master project for the CPRI State-Level Hackathon screening round ("
 ---
 
 ## 📑 Table of Contents
-- [1. What's Inside](#whats-inside)
-- [2. What the Pipeline Does](#pipeline)
-- [3. Running the Project](#running)
-- [4. Design Principles](#design)
-- [5. Troubleshooting](#troubleshooting)
+- [1. Problem Statement](#problem-statement)
+- [2. Our Approach](#our-approach)
+- [3. What's Inside](#whats-inside)
+- [4. What the Pipeline Does](#pipeline)
+- [5. Running the Project](#running)
+- [6. Design Principles](#design)
+- [7. Troubleshooting](#troubleshooting)
+
+---
+
+<a name="problem-statement"></a>
+## 1. Problem Statement [🔝](#top)
+
+The objective of this challenge is to analyze data from a CPRI laboratory electrical test bench. The system records input parameters (voltage, current, temperature, duration) and output sensors (S1-S4) during repeated tests. The dataset is noisy, containing missing values, duplicates, sensor errors, and abnormal test runs. 
+
+The goal is to:
+1. **Identify Abnormal Records**: Distinguish between genuine changes in the equipment's operating regime and erroneous measurements (sensor faults, corrupted data).
+2. **Predict the Reference Parameter**: Discover the hidden mathematical relationship between the input parameters and a verified Reference Parameter, predicting it for new unseen tests.
+3. **Automate the Process**: Create an end-to-end automated pipeline that generates predictions and a summary report without any manual intervention.
+
+---
+
+<a name="our-approach"></a>
+## 2. Our Approach [🔝](#top)
+
+Team KDG developed a robust, two-stage machine learning pipeline to solve the challenge:
+
+- **Data Cleaning & Imputation**: We handle missing data using median imputation (robust to outliers) and systematically drop exact duplicate records to ensure data integrity.
+- **Hybrid Abnormality Detection**: We combine physically motivated rules (e.g., negative temperature rises, robust z-score spike detection) with a Random Forest classifier trained on the historical `Validity_Label`. This ensures both known physical impossibilities and complex learned patterns are flagged as invalid.
+- **Physics-Informed Regression**: A Random Forest Regressor is trained to predict the Reference Parameter. Crucially, we train this model *only on Valid historical records* to prevent corrupted data from distorting the learned physical relationship.
+- **Fully Automated Pipeline**: The entire workflow runs via a single script (`pipeline.py`), automatically producing the required deliverables (`KDG.csv` and `summary.json`) ready for a production Digital Twin environment.
 
 ---
 
 <a name="whats-inside"></a>
-## 1. What's inside [🔝](#top)
+## 3. What's inside [🔝](#top)
 
 ```text
 cpri_project/
@@ -43,7 +69,7 @@ cpri_project/
 ---
 
 <a name="pipeline"></a>
-## 2. What the baseline pipeline already does [🔝](#top)
+## 4. What the baseline pipeline already does [🔝](#top)
 
 | Task | Approach used in `pipeline.py` |
 |------|----------------------------------|
@@ -54,7 +80,7 @@ cpri_project/
 ---
 
 <a name="running"></a>
-## 3. Running it in Antigravity IDE [🔝](#top)
+## 5. Running it in Antigravity IDE [🔝](#top)
 
 [Antigravity](https://antigravity.google/) is Google's agentic, AI-native IDE.
 
@@ -84,7 +110,7 @@ cpri_project/
 ---
 
 <a name="design"></a>
-## 4. Design principles baked into this scaffold [🔝](#top)
+## 6. Design principles baked into this scaffold [🔝](#top)
 
 - **Fully reproducible / no manual record edits.** Every decision (imputation, rule thresholds, model training) is a function of the data.
 - **Genuine regime change ≠ fault.** The rule engine flags *statistical and physical* anomalies, not merely "unusual" values.
@@ -94,7 +120,7 @@ cpri_project/
 ---
 
 <a name="troubleshooting"></a>
-## 5. Troubleshooting [🔝](#top)
+## 7. Troubleshooting [🔝](#top)
 
 | Symptom | Fix |
 |---|---|
