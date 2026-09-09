@@ -1,0 +1,26 @@
+{
+  "team_name": "KDG",
+  "records_analysed": 350,
+  "abnormal_invalid_records_identified": 31,
+  "predicted_reference_parameter": {
+    "min": 13.2097,
+    "max": 55.3988,
+    "average": 26.2588
+  },
+  "top_attention_test_ids": [
+    "TST-0213",
+    "TST-0298",
+    "TST-0271"
+  ],
+  "most_important_features": {
+    "Load_Current_A": 0.903,
+    "Sensor_S2": 0.057,
+    "Ambient_Temperature_C": 0.032,
+    "Sensor_S1": 0.002,
+    "Sensor_S3": 0.002,
+    "Applied_Voltage_kV": 0.001,
+    "Test_Duration_min": 0.001,
+    "Sensor_S4": 0.001
+  },
+  "approach_summary_max_100_words": "We cleaned duplicates and imputed missing values, then flagged abnormal records using physical rules (sensor spikes, negative or incoherent temperature rises, out-of-range set-points) combined with a Random Forest classifier trained on engineer labels. A separate Random Forest, trained only on Valid historical records, predicts the Reference Parameter from voltage, current, temperature, duration and sensors, distinguishing genuine regime shifts from faults."
+}
