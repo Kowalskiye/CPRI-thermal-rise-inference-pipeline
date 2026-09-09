@@ -151,11 +151,3 @@ run it with zero configuration guesswork.
 
 ---
 
-## 6. Troubleshooting
-
-| Symptom | Fix |
-|---|---|
-| `ModuleNotFoundError: sklearn` | `pip install -r src/requirements.txt` inside the active environment |
-| Output CSV still named `TeamName.csv` | You forgot to edit `TEAM_NAME` in `src/pipeline.py` |
-| Numbers change slightly between runs | Check you haven't changed `RANDOM_STATE`; the train/test split and model fits are otherwise deterministic |
-| Notebook can't find `pipeline` module | Run the first cell (`sys.path.insert(...)`) before any other cell |
